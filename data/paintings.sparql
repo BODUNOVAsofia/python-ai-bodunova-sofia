@@ -1,0 +1,14 @@
+# Получает список картин с высотой, шириной, годом создания, страной, материалом и автором (все свойства, кроме материала, обязательны).
+SELECT DISTINCT ?painting ?paintingLabel ?height ?width (YEAR(?creationDate) as ?creationYear) ?countryLabel ?materialLabel ?authorLabel
+WHERE {
+  ?painting wdt:P31 wd:Q3305213;  # Экземпляр класса "картина"
+            wdt:P2048 ?height;    # Высота (обязательно)
+            wdt:P2049 ?width;     # Ширина (обязательно)
+            wdt:P571 ?creationDate; # Дата создания (обязательно)
+            wdt:P17 ?country;     # Страна основания (обязательно)
+            wdt:P170 ?author.     # Автор картины (обязательно)
+  OPTIONAL { ?painting wdt:P186 ?material. }  # Материал изготовления (опционально)
+
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "ru,en". }
+}
+LIMIT 1000
